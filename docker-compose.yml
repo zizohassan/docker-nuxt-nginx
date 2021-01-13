@@ -1,0 +1,28 @@
+version: '3'
+
+networks:
+  frontend:
+
+services:
+  nginx:
+    image: library/nginx:stable-alpine
+    container_name: nuxt-nginx
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8070:80"
+    depends_on:
+      - nuxtjs
+    networks:
+      - frontend
+  nuxtjs:
+    build: ./src/app
+    container_name: nuxtjs-5dmat-web
+    volumes:
+      - ./src/app:/app
+    ports:
+      - "3000:3000"
+    command:
+      "yarn dev"
+    networks:
+      - frontend
